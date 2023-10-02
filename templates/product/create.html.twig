@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for success in app.flashes('success') %}
+        {{ success }}
+    {% endfor %}
+
+    {{ form_start(form) }}
+        <div>
+            <button type="submit">
+                Submit
+            </button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+

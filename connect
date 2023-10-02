@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker container exec -ti foi-php-1 sh
