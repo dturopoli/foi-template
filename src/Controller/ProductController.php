@@ -17,14 +17,22 @@ class ProductController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
             $productRepository->save($formData);
+
+            $this->addFlash('success', 'Product created.');
         }
 
         return $this->render('product/create.html.twig', [
             'product_form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/product/list', name: 'app_product_list', methods: ['GET'])]
+    public function list()
+    {
+        return $this->render('product/list.html.twig');
     }
 }
