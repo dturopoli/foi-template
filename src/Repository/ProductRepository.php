@@ -30,6 +30,15 @@ class ProductRepository extends ServiceEntityRepository
         $this->entityManager->flush();
     }
 
+    public function getExpensive(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.price > :price')
+            ->setParameter('price', 9)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

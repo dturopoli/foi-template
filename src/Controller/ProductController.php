@@ -6,12 +6,13 @@ use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
     #[Route('/product/create', name: 'app_product_create', methods: ['GET', 'POST'])]
-    public function create(Request $request, ProductRepository $productRepository)
+    public function create(Request $request, ProductRepository $productRepository): Response
     {
         $form = $this->createForm(ProductType::class);
 
@@ -31,8 +32,16 @@ class ProductController extends AbstractController
     }
 
     #[Route('/product/list', name: 'app_product_list', methods: ['GET'])]
-    public function list()
+    public function list(Request $request, ProductRepository $productRepository): Response
     {
-        return $this->render('product/list.html.twig');
+        if ($request->get('sku')) {
+            $products = $productRepository->findBy(['sku' => $request->get('sku')]);
+        } else {
+            $products = $productRepository->getExpensive();
+        }
+
+        return $this->render('product/list.html.twig', [
+            'products' => $products
+        ]);
     }
 }
